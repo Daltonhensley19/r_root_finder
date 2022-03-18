@@ -49,7 +49,6 @@ fn ra_root(p: i64, q: i64) -> Vec<(f64, f64)> {
 fn main() {
     let input = io::stdin();
 
-
     let mut p_string = String::new();
     let mut q_string = String::new();
 
@@ -58,13 +57,29 @@ fn main() {
 
     println!("Enter value for q: ");
     input.read_line(&mut q_string).unwrap();
-    
-    let p: i64 = p_string.trim().parse().expect("Invalid input for p.");
-    let q: i64 = q_string.trim().parse().expect("Invaild input for q."); 
 
+    let mut p = p_string.trim().parse::<i64>();
+    let mut q = q_string.trim().parse::<i64>();
+
+    // User input validation
+    while p.is_err() || q.is_err() || p == Ok(0) || q == Ok(0) {
+        p_string.clear();
+        q_string.clear();
+
+        println!("p or q is not a number or they are zero. Try again.");
+
+        println!("Enter value for p: ");
+        input.read_line(&mut p_string).unwrap();
+
+        println!("Enter value for q: ");
+        input.read_line(&mut q_string).unwrap();
+
+        p = p_string.trim().parse::<i64>();
+        q = q_string.trim().parse::<i64>();
+    }
 
     // Get inital possible rational roots
-    let mut r_poss = ra_root(p, q);
+    let mut r_poss = ra_root(p.unwrap(), q.unwrap());
 
     // Sort list
     r_poss.sort_by(|a, b| a.partial_cmp(b).unwrap());
