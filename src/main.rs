@@ -1,4 +1,7 @@
 use std::io;
+use std::io::prelude::*;
+
+use std::fs::File;
 
 fn calc_factors(mut num: i64) -> Vec<f64> {
     let mut factors = Vec::new();
@@ -31,8 +34,8 @@ fn ra_root(p: i64, q: i64) -> Vec<(f64, f64)> {
     let q_factors = calc_factors(q);
     let p_factors = calc_factors(p);
 
-    println!("Factors of p: {:?}", p_factors);
-    println!("Factors of q: {:?}", q_factors);
+    println!("Factors of p: {:?}\n", p_factors);
+    println!("Factors of q: {:?}\n", q_factors);
 
     for i in 0..q_factors.len() {
         for j in 0..p_factors.len() {
@@ -87,5 +90,24 @@ fn main() {
     // Remove duplicates
     r_poss.dedup_by_key(|k| k.0);
 
-    println!("Possible rational roots are (+q/p, -q/p): {:?}", r_poss);
+    //println!("Possible rational roots are (+q/p, -q/p): {:?}", r_poss);
+
+    let mut r_poss_str = String::new();
+
+    for i in 0..r_poss.len() {
+        r_poss_str += "(";
+        r_poss_str += &r_poss[i].0.to_string();
+        r_poss_str += ", ";
+        r_poss_str += &r_poss[i].1.to_string();
+
+        if i == r_poss.len() - 1 {
+            r_poss_str += ")";
+        } else {
+            r_poss_str += ")\n";
+        }
+    }
+    let mut file = File::create("r_roots.txt").unwrap();
+
+    println!("{}", r_poss_str);
+    file.write_all(r_poss_str.as_bytes()).unwrap();
 }
