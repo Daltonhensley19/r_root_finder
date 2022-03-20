@@ -33,7 +33,7 @@ fn ra_root(p: i64, q: i64) -> Vec<(f64, f64)> {
 
     let q_factors = calc_factors(q);
     let p_factors = calc_factors(p);
-
+    
     println!("Factors of p: {:?}\n", p_factors);
     println!("Factors of q: {:?}\n", q_factors);
 
